@@ -1,1 +1,1 @@
-web: gunicorn Customer_Churn_Prediction.app --log-file
+web: gunicorn Customer_Churn_Prediction.app --log-file=/path/to/access.log
