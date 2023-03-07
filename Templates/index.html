@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Churn Prediction</title>
+	<title>Customer Churn Prediction</title>
 </head>
 <body>
-	<h1>Churn Prediction</h1>
-	<form id="churn-prediction-form">
+	<h1>Customer Churn Prediction</h1>
+	<form id="prediction-form" method="POST" action="/predict">
 		<label for="CreditScore">Credit Score:</label>
 		<input type="text" name="CreditScore"><br>
 
@@ -49,42 +49,14 @@
 		<label for="EstimatedSalary">Estimated Salary:</label>
 		<input type="text" name="EstimatedSalary"><br>
 
-		<button type="button" onclick="predict()">Predict</button>
+		<button type="submit" id="predict-button">Predict</button>
+		<button type="button" id="clear-button">Clear</button>
 	</form>
 
-	<div id="prediction"></div>
+	<div id="prediction-result">{{ prediction_result }}</div>
 
-	<script>
-		function predict() {
-			// Get the form data
-			var form = document.getElementById("churn-prediction-form");
-			var data = {
-				"CreditScore": form.CreditScore.value,
-				"Geography": form.Geography.value,
-				"Gender": form.Gender.value,
-				"Age": form.Age.value,
-				"Tenure": form.Tenure.value,
-				"Balance": form.Balance.value,
-				"NumOfProducts": form.NumOfProducts.value,
-				"HasCrCard": form.HasCrCard.value,
-				"IsActiveMember": form.IsActiveMember.value,
-				"EstimatedSalary": form.EstimatedSalary.value
-			};
-
-			// Send a POST request to the server
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", "{{ url_for('predict') }}");
-			xhr.setRequestHeader("Content-Type", "application/json");
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState === 4 && xhr.status === 200) {
-					// Show the prediction in the browser
-var prediction = JSON.parse(xhr.responseText).prediction;
-document.getElementById("prediction").innerHTML = "Churn Probability: " + prediction.toFixed(2);
-}
-};
-xhr.send(JSON.stringify({data: data}));
-}
-</script>
+    
 
 </body>
+
 </html>
