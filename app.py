@@ -1,15 +1,15 @@
 from flask import Flask, request, jsonify, render_template
 import numpy as np
-from tensorflow.keras.models import load_model
+import joblib
+#from tensorflow.keras.models import load_model
 
+
+#Load the saved model from a file
+#model = joblib.load(open('model.h5', 'rb'))
+#regmodel= joblib.load(open('regmodel.h5', 'rb')) 
 
 app = Flask(__name__)
 
-# Load the saved model from a file
-model = load_model('model.h5')
-
-# Set Flask app configuration to production
-app.config['ENV'] = 'production'
 
 @app.route("/")
 def home():
@@ -19,7 +19,6 @@ def home():
 def predict():
     # Get the input data from the request
     data = request.get_json()['data']
-
     # Convert the input data to a numpy array
     features = np.array([data['CreditScore'],
     0 if data['Geography'] == 'France' else 1 if data['Geography'] == 'Spain' else 2, # convert Geography to numeric
@@ -70,4 +69,4 @@ def predict_api():
 
 if __name__ == "__main__":
     # Set Flask app to listen to all IP addresses and use the correct port
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
